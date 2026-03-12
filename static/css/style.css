@@ -1,0 +1,145 @@
+/* ===== Общие стили Dota 2 Tracker ===== */
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+}
+
+main {
+    flex: 1;
+}
+
+/* Навигация */
+.navbar {
+    background: linear-gradient(135deg, #16213e 0%, #0f3460 100%) !important;
+}
+
+.navbar-brand {
+    font-size: 1.3rem;
+}
+
+/* Карточки */
+.card {
+    border-radius: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Таблицы */
+.table-dark {
+    --bs-table-bg: #16213e;
+    --bs-table-hover-bg: #1a2745;
+}
+
+/* Бейджи */
+.badge {
+    font-weight: 500;
+    padding: 0.4em 0.7em;
+}
+
+/* Пагинация */
+.page-link {
+    background-color: #16213e;
+    border-color: #0f3460;
+    color: #e0e0e0;
+}
+
+.page-link:hover {
+    background-color: #0f3460;
+    color: #fff;
+}
+
+.page-item.active .page-link {
+    background-color: #e94560;
+    border-color: #e94560;
+}
+
+/* Кнопки */
+.btn-danger {
+    background-color: #e94560;
+    border-color: #e94560;
+}
+
+.btn-danger:hover {
+    background-color: #c73652;
+    border-color: #c73652;
+}
+
+/* Прогресс-бары */
+.progress {
+    background-color: #2a2a4a;
+    border-radius: 10px;
+}
+
+/* Формы */
+.form-control,
+.form-select {
+    background-color: #16213e;
+    border-color: #0f3460;
+    color: #e0e0e0;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: #1a2745;
+    border-color: #e94560;
+    color: #e0e0e0;
+    box-shadow: 0 0 0 0.25rem rgba(233, 69, 96, 0.25);
+}
+
+/* Ссылки */
+a {
+    color: #53a8e2;
+}
+
+a:hover {
+    color: #7bc2f7;
+}
+
+/* Футер */
+footer {
+    background: linear-gradient(135deg, #16213e 0%, #0f3460 100%) !important;
+}
+
+/* Анимация для статистики */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+/* Звёздочки сложности */
+.bi-star-fill {
+    font-size: 0.9rem;
+}
+
+.bi-star {
+    font-size: 0.9rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+
+    .table {
+        font-size: 0.85rem;
+    }
+}

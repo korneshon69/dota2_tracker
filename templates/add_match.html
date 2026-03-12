@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — Dota 2 Tracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4"><i class="bi bi-plus-circle text-danger"></i> {{ title }}</h2>
+
+        <div class="card bg-dark border-secondary">
+            <div class="card-body">
+                <form method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.hero_id.label }}</label>
+                            {{ form.hero_id(class="form-select") }}
+                            {% for error in form.hero_id.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.match_type_id.label }}</label>
+                            {{ form.match_type_id(class="form-select") }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.date_played.label }}</label>
+                            {{ form.date_played(class="form-control") }}
+                            {% for error in form.date_played.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">{{ form.duration_minutes.label }}</label>
+                            {{ form.duration_minutes(class="form-control", placeholder="Минуты") }}
+                            {% for error in form.duration_minutes.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">{{ form.result.label }}</label>
+                            {{ form.result(class="form-select") }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.kills.label }}</label>
+                            {{ form.kills(class="form-control", value=form.kills.data or 0) }}
+                            {% for error in form.kills.errors %}
+                            <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.deaths.label }}</label>
+                            {{ form.deaths(class="form-control", value=form.deaths.data or 0) }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.assists.label }}</label>
+                            {{ form.assists(class="form-control", value=form.assists.data or 0) }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.team_role.label }}</label>
+                            {{ form.team_role(class="form-select") }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.gpm.label }}</label>
+                            {{ form.gpm(class="form-control", value=form.gpm.data or 0) }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.xpm.label }}</label>
+                            {{ form.xpm(class="form-control", value=form.xpm.data or 0) }}
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">{{ form.notes.label }}</label>
+                            {{ form.notes(class="form-control", rows=3, placeholder="Заметки по матчу...") }}
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-check-circle"></i> {{ form.submit.label.text }}
+                        </button>
+                        <a href="{{ url_for('matches') }}" class="btn btn-outline-secondary ms-2">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

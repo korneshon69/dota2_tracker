@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — Админка{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="mb-4">{{ title }}</h2>
+        <div class="card bg-dark border-secondary">
+            <div class="card-body">
+                <form method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.name.label }}</label>
+                        {{ form.name(class="form-control") }}
+                        {% for error in form.name.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.attribute.label }}</label>
+                        {{ form.attribute(class="form-select") }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.role_id.label }}</label>
+                        {{ form.role_id(class="form-select") }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.difficulty.label }}</label>
+                        {{ form.difficulty(class="form-select") }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.attack_type.label }}</label>
+                        {{ form.attack_type(class="form-select") }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">{{ form.description.label }}</label>
+                        {{ form.description(class="form-control", rows=3) }}
+                    </div>
+
+                    <button type="submit" class="btn btn-warning">
+                        <i class="bi bi-check-circle"></i> Сохранить
+                    </button>
+                    <a href="{{ url_for('admin_heroes') }}" class="btn btn-outline-secondary ms-2">Отмена</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Редактировать матч — Dota 2 Tracker{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4"><i class="bi bi-pencil text-warning"></i> {{ title }}</h2>
+
+        <div class="card bg-dark border-secondary">
+            <div class="card-body">
+                <form method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.hero_id.label }}</label>
+                            {{ form.hero_id(class="form-select") }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.match_type_id.label }}</label>
+                            {{ form.match_type_id(class="form-select") }}
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">{{ form.date_played.label }}</label>
+                            {{ form.date_played(class="form-control") }}
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">{{ form.duration_minutes.label }}</label>
+                            {{ form.duration_minutes(class="form-control") }}
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">{{ form.result.label }}</label>
+                            {{ form.result(class="form-select") }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.kills.label }}</label>
+                            {{ form.kills(class="form-control") }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.deaths.label }}</label>
+                            {{ form.deaths(class="form-control") }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.assists.label }}</label>
+                            {{ form.assists(class="form-control") }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.team_role.label }}</label>
+                            {{ form.team_role(class="form-select") }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.gpm.label }}</label>
+                            {{ form.gpm(class="form-control") }}
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">{{ form.xpm.label }}</label>
+                            {{ form.xpm(class="form-control") }}
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">{{ form.notes.label }}</label>
+                            {{ form.notes(class="form-control", rows=3) }}
+                        </div>
+                    </div>
+
+                    <div class="mt-4 d-flex justify-content-between">
+                        <div>
+                            <button type="submit" class="btn btn-warning">
+                                <i class="bi bi-check-circle"></i> Сохранить
+                            </button>
+                            <a href="{{ url_for('match_detail', match_id=match.id) }}"
+                               class="btn btn-outline-secondary ms-2">Отмена</a>
+                        </div>
+                        <form method="POST" action="{{ url_for('delete_match', match_id=match.id) }}"
+                              onsubmit="return confirm('Удалить этот матч?');" class="d-inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="bi bi-trash"></i> Удалить
+                            </button>
+                        </form>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

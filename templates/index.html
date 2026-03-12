@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Dota 2 Match Tracker — Главная{% endblock %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-4 mb-3">
+        <i class="bi bi-controller text-danger"></i> Dota 2 Match Tracker
+    </h1>
+    <p class="lead text-muted mb-4">
+        Ведите статистику своих матчей, анализируйте игру и становитесь лучше!
+    </p>
+
+    {% if not current_user.is_authenticated %}
+    <div class="mb-4">
+        <a href="{{ url_for('register') }}" class="btn btn-danger btn-lg me-2">
+            <i class="bi bi-person-plus"></i> Зарегистрироваться
+        </a>
+        <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg">
+            <i class="bi bi-box-arrow-in-right"></i> Войти
+        </a>
+    </div>
+    {% else %}
+    <div class="mb-4">
+        <a href="{{ url_for('add_match') }}" class="btn btn-danger btn-lg me-2">
+            <i class="bi bi-plus-circle"></i> Добавить матч
+        </a>
+        <a href="{{ url_for('stats') }}" class="btn btn-outline-light btn-lg">
+            <i class="bi bi-graph-up"></i> Моя статистика
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Статистика платформы -->
+<div class="row g-4 mb-5">
+    <div class="col-md-4">
+        <div class="card bg-dark border-danger text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-people-fill display-4 text-danger"></i>
+                <h2 class="mt-2">{{ total_users }}</h2>
+                <p class="text-muted">Игроков</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-dark border-info text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-joystick display-4 text-info"></i>
+                <h2 class="mt-2">{{ total_matches }}</h2>
+                <p class="text-muted">Матчей записано</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-dark border-success text-center h-100">
+            <div class="card-body">
+                <i class="bi bi-shield-fill display-4 text-success"></i>
+                <h2 class="mt-2">{{ total_heroes }}</h2>
+                <p class="text-muted">Героев в базе</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Возможности -->
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-body">
+                <h5><i class="bi bi-clipboard-data text-warning"></i> Записывайте матчи</h5>
+                <p class="text-muted">Добавляйте информацию о каждом сыгранном матче: герой, K/D/A, результат, роль в команде.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-body">
+                <h5><i class="bi bi-bar-chart-fill text-info"></i> Анализируйте статистику</h5>
+                <p class="text-muted">Просматривайте винрейт, средний KDA, лучших героев и тренды вашей игры.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-body">
+                <h5><i class="bi bi-search text-success"></i> Фильтруйте и ищите</h5>
+                <p class="text-muted">Находите матчи по дате, герою, результату. Используйте удобные фильтры.</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card bg-dark border-secondary h-100">
+            <div class="card-body">
+                <h5><i class="bi bi-download text-danger"></i> Экспортируйте отчёты</h5>
+                <p class="text-muted">Скачивайте статистику и историю матчей в CSV формате.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Матч #{{ match.id }} — Dota 2 Tracker{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('matches') }}">Матчи</a></li>
+        <li class="breadcrumb-item active">Матч #{{ match.id }}</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card bg-dark border-{% if match.result == 'win' %}success{% else %}danger{% endif %}">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">
+                    {{ match.hero.name }} —
+                    {% if match.result == 'win' %}
+                        <span class="text-success">Победа</span>
+                    {% else %}
+                        <span class="text-danger">Поражение</span>
+                    {% endif %}
+                </h4>
+                <a href="{{ url_for('edit_match', match_id=match.id) }}"
+                   class="btn btn-sm btn-outline-warning">
+                    <i class="bi bi-pencil"></i> Редактировать
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-6 col-md-3 text-center">
+                        <h3>{{ match.kda_string }}</h3>
+                        <small class="text-muted">K / D / A</small>
+                    </div>
+                    <div class="col-6 col-md-3 text-center">
+                        <h3 class="{% if match.kda_ratio >= 3 %}text-success{% elif match.kda_ratio >= 1.5 %}text-warning{% else %}text-danger{% endif %}">
+                            {{ match.kda_ratio }}
+                        </h3>
+                        <small class="text-muted">KDA Ratio</small>
+                    </div>
+                    <div class="col-6 col-md-3 text-center">
+                        <h3>{{ match.duration_minutes }} мин</h3>
+                        <small class="text-muted">Длительность</small>
+                    </div>
+                    <div class="col-6 col-md-3 text-center">
+                        <h3>{{ match.team_role }}</h3>
+                        <small class="text-muted">Роль</small>
+                    </div>
+                </div>
+
+                <hr class="border-secondary">
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <p><strong>Дата:</strong> {{ match.date_played.strftime('%d.%m.%Y %H:%M') }}</p>
+                        <p><strong>Тип матча:</strong> {{ match.match_type_ref.name if match.match_type_ref else '—' }}</p>
+                        <p><strong>Герой:</strong>
+                            <a href="{{ url_for('hero_detail', hero_id=match.hero_id) }}">
+                                {{ match.hero.name }}
+                            </a>
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>GPM:</strong> {{ match.gpm }}</p>
+                        <p><strong>XPM:</strong> {{ match.xpm }}</p>
+                    </div>
+                </div>
+
+                {% if match.notes %}
+                <hr class="border-secondary">
+                <p><strong>Заметки:</strong></p>
+                <p class="text-muted">{{ match.notes }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

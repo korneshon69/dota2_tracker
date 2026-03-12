@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}Герои Dota 2{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-shield-fill text-danger"></i> Герои Dota 2</h2>
+
+<!-- Фильтры -->
+<div class="card bg-dark border-secondary mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label">Поиск</label>
+                <input type="text" name="search" class="form-control"
+                       value="{{ search }}" placeholder="Название героя...">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Атрибут</label>
+                <select name="attribute" class="form-select">
+                    <option value="">Все</option>
+                    <option value="strength" {% if attribute == 'strength' %}selected{% endif %}>🔴 Сила</option>
+                    <option value="agility" {% if attribute == 'agility' %}selected{% endif %}>🟢 Ловкость</option>
+                    <option value="intelligence" {% if attribute == 'intelligence' %}selected{% endif %}>🔵 Интеллект</option>
+                    <option value="universal" {% if attribute == 'universal' %}selected{% endif %}>🟣 Универсальный</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Роль</label>
+                <select name="role_id" class="form-select">
+                    <option value="">Все</option>
+                    {% for role in roles %}
+                    <option value="{{ role.id }}" {% if role_id == role.id|string %}selected{% endif %}>
+                        {{ role.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-danger w-100">
+                    <i class="bi bi-search"></i> Найти
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Таблица героев -->
+<div class="table-responsive">
+    <table class="table table-dark table-hover">
+        <thead>
+            <tr>
+                <th>Герой</th>
+                <th>Атрибут</th>
+                <th>Роль</th>
+                <th>Сложность</th>
+                <th>Тип атаки</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hero in heroes %}
+            <tr>
+                <td><strong>{{ hero.name }}</strong></td>
+                <td>
+                    {% if hero.attribute == 'strength' %}
+                        <span class="badge bg-danger">🔴 Сила</span>
+                    {% elif hero.attribute == 'agility' %}
+                        <span class="badge bg-success">🟢 Ловкость</span>
+                    {% elif hero.attribute == 'intelligence' %}
+                        <span class="badge bg-primary">🔵 Интеллект</span>
+                    {% else %}
+                        <span class="badge bg-secondary">🟣 Универсальный</span>
+                    {% endif %}
+                </td>
+                <td>{{ hero.role_ref.name if hero.role_ref else '—' }}</td>
+                <td>
+                    {% for i in range(hero.difficulty) %}
+                        <i class="bi bi-star-fill text-warning"></i>
+                    {% endfor %}
+                    {% for i in range(3 - hero.difficulty) %}
+                        <i class="bi bi-star text-muted"></i>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% if hero.attack_type == 'melee' %}
+                        <i class="bi bi-sword"></i> Ближний
+                    {% else %}
+                        <i class="bi bi-bullseye"></i> Дальний
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ url_for('hero_detail', hero_id=hero.id) }}"
+                       class="btn btn-sm btn-outline-info">
+                        <i class="bi bi-eye"></i> Подробнее
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if not heroes %}
+<div class="text-center text-muted py-5">
+    <i class="bi bi-search display-4"></i>
+    <p class="mt-2">Герои не найдены</p>
+</div>
+{% endif %}
+
+<p class="text-muted">Всего героев: {{ heroes|length }}</p>
+{% endblock %}

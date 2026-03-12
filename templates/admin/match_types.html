@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Типы матчей — Админка{% endblock %}
+
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-list-check text-warning"></i> Типы матчей</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card bg-dark border-secondary mb-4">
+            <div class="card-header">Добавить тип</div>
+            <div class="card-body">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                    <div class="input-group">
+                        {{ form.name(class="form-control", placeholder="Тип матча") }}
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-plus"></i> Добавить
+                        </button>
+                    </div>
+                    {% for error in form.name.errors %}
+                    <div class="text-danger small">{{ error }}</div>
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card bg-dark border-secondary">
+            <div class="card-header">Существующие типы</div>
+            <ul class="list-group list-group-flush">
+                {% for t in types %}
+                <li class="list-group-item bg-dark d-flex justify-content-between align-items-center">
+                    {{ t.name }}
+                    <span>
+                        <span class="badge bg-secondary">{{ t.matches.count() }} матчей</span>
+                        <form method="POST" action="{{ url_for('admin_delete_match_type', type_id=t.id) }}"
+                              class="d-inline" onsubmit="return confirm('Удалить тип?');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger ms-2">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

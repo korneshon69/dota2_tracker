@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Управление матчами — Админка{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-joystick text-warning"></i> Управление матчами</h2>
+    <div class="btn-group">
+        <button type="button" class="btn btn-outline-success btn-sm dropdown-toggle"
+                data-bs-toggle="dropdown">
+            <i class="bi bi-download"></i> Экспорт всех
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+                <a class="dropdown-item" href="{{ url_for('admin_export_all_matches') }}">
+                    <i class="bi bi-filetype-csv"></i> CSV
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{{ url_for('admin_export_all_matches_word') }}">
+                    <i class="bi bi-file-earmark-word"></i> Word
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<form method="GET" class="row g-2 mb-4">
+    <div class="col-md-4">
+        <input type="text" name="search" class="form-control" placeholder="Поиск по игроку..."
+               value="{{ search }}">
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-warning"><i class="bi bi-search"></i> Найти</button>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-dark table-hover table-sm">
+        <thead>
+            <tr>
+                <th>ID</th><th>Игрок</th><th>Дата</th><th>Герой</th>
+                <th>Результат</th><th>KDA</th><th>Длит.</th><th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for match in pagination.items %}
+            <tr>
+                <td>{{ match.id }}</td>
+                <td>{{ match.player.username }}</td>
+                <td>{{ match.date_played.strftime('%d.%m.%Y %H:%M') }}</td>
+                <td>{{ match.hero.name }}</td>
+                <td>
+                    {% if match.result == 'win' %}
+                        <span class="badge bg-success">Win</span>
+                    {% else %}
+                        <span class="badge bg-danger">Loss</span>
+                    {% endif %}
+                </td>
+                <td>{{ match.kda_string }}</td>
+                <td>{{ match.duration_minutes }}м</td>
+                <td>
+                    <a href="{{ url_for('match_detail', match_id=match.id) }}"
+                       class="btn btn-sm btn-outline-info"><i class="bi bi-eye"></i></a>
+                    <a href="{{ url_for('edit_match', match_id=match.id) }}"
+                       class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil"></i></a>
+                    <form method="POST" action="{{ url_for('admin_delete_match', match_id=match.id) }}"
+                          class="d-inline" onsubmit="return confirm('Удалить матч?');">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Пагинация -->
+{% if pagination.pages > 1 %}
+<nav>
+    <ul class="pagination justify-content-center">
+        {% for p in pagination.iter_pages() %}
+            {% if p %}
+            <li class="page-item {% if p == pagination.page %}active{% endif %}">
+                <a class="page-link" href="?page={{ p }}&search={{ search }}">{{ p }}</a>
+            </li>
+            {% else %}
+            <li class="page-item disabled"><span class="page-link">…</span></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}
